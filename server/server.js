@@ -13,7 +13,7 @@ process.on("uncaughtException", (err) => {
 
 connectDatabasae();
 
-const server = app.listen(process.env.PORT_KEY, () => {
+const server = app.listen(process.env.PORT_KEY || 4000, () => {
     console.log(`the server is running at http://localhost:${process.env.PORT_KEY}`)
 })
 

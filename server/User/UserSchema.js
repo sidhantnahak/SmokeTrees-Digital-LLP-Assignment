@@ -6,9 +6,8 @@ const userSchema=new mongoose.Schema({
         required:true
     },
     address:{
-        type:Array,
-        required:true,
-        default:[]
+        type:String,
+        required:true
     }
 })
 
