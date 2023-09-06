@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { positions, transitions, Provider as AlertProvider } from 'react-alert';
 import { Provider } from 'react-redux';
 import AlertTemplate from 'react-alert-template-basic';
+import store from './store';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 const options = {
@@ -15,11 +16,17 @@ const options = {
 };
 root.render(
 
+
+  <Provider store={store}>
+
+
     <AlertProvider template={AlertTemplate}{...options}>
       <App />
 
     </AlertProvider>
- 
+
+  </Provider>
+
   // <React.StrictMode>
   // </React.StrictMode>
 );

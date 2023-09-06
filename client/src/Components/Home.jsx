@@ -2,9 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import './home.css'
 import axios from 'axios'
-const backend_url="https://note-making-app.onrender.com"
+import { useDispatch } from 'react-redux'
+import { register_user } from './redux/userAction'
 const Home = () => {
+    const [getdata,setgetdata]=useState([]);
+    const dispatch=useDispatch();
 
+    const backend_url="https://studentdatacollection.onrender.com"
 
     const [data,setdata]=useState({name:"",address:""});
     const  onchangeHandler=(e)=>{
@@ -14,22 +18,27 @@ const Home = () => {
     }
     const formHandler=(e)=>{
         e.preventDefault()
+        dispatch(register_user(data))
     }
-    const getUser=async()=>{
-        try {
-          const data=await axios.get(`${backend_url}/api/v1/getalluser`)
-          console.log(data.data);
-            
-        } catch (error) {
-            console.log(error)
-            
-        }
-        
-    }
+    // const getUser=async()=>{
+    //     console.log("hrer2")
+    //     try {
+    //       await axios.get(`${backend_url}/api/v1/getalluser`)
+    //       .then(e=>e.data)
+    //       .then(data=>setgetdata(data))
+    //       .catch(err=>console.log(err))
 
+            
+    //     } catch (error) {
+    //         console.log(error)
+            
+    //     }
+        
+    // }
+console.log(getdata)
     useEffect(() => {
         console.log("hrer")
-        getUser();
+        // getUser();
 
     }, [])
     
