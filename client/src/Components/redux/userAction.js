@@ -17,7 +17,6 @@ export const register_user=(data)=>async(dispatch)=>{
     dispatch({type:register_user_sucess,payload:data.sucess});
 
     } catch (error) {
-        console.log(error.response)
     dispatch({type:register_user_fail,payload:error.response.data.message});
         
     }

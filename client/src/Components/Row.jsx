@@ -1,18 +1,18 @@
 import React, { useEffect } from 'react'
 
-const Row = ({ data, i }) => {
+const Row = ({ data,i }) => {
 
     useEffect(() => {
 
     }, [data])
-
+    
 
     return (
         <>{
             <tr key={i}>
-                <td scope="col">{`${i}`}</td>
-                <td scope="col">{data.name}</td>
-                <td scope="col">{data.address}</td>
+                <td >{`${i}`}</td>
+                <td >{data.name}</td>
+                <td >{data.address}</td>
             </tr>
 
         }

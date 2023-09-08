@@ -8,44 +8,37 @@ import { register_user_reset } from './redux/userConstants'
 import Users from './Users'
 import Loader from './Loader'
 const Home = () => {
+
     const dispatch = useDispatch();
     const alert = useAlert();
+    const ref = useRef();
 
 
     const [data, setdata] = useState({ name: "", address: "" });
     const [topHeight, settopHeight] = useState(0)
-    const ref = useRef();
-
     const { sucess, error, loading } = useSelector(state => state.user);
 
     const onchangeHandler = (e) => {
-
         setdata({ ...data, [e.target.name]: e.target.value })
-
     }
     const formHandler = (e) => {
         e.preventDefault()
         dispatch(register_user(data))
-
-
     }
     const userHandler = () => {
         let elem = document.getElementById("users");
         elem.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
     }
-    var elem = document.getElementById("sidebar")
 
+    var elem = document.getElementById("sidebar")
     if (topHeight > 40) {
         if (elem) {
             elem.style.paddingTop = "1.5rem"
-
         }
     } else {
         if (elem) {
             elem.style.paddingTop = "5rem"
-
         }
-
     }
     document.onscroll = function () {
         settopHeight(document.documentElement.scrollTop);
@@ -64,7 +57,7 @@ const Home = () => {
             dispatch({ type: register_user_reset })
         }
 
-    }, [dispatch, error, sucess, alert, data])
+    }, [dispatch, error, sucess, alert])
 
 
 
@@ -101,7 +94,7 @@ const Home = () => {
                     </div>
                     <div className="mb-3">
                         <label htmlFor="exampleFormControlTextarea1" className="form-label">Enter Your Address</label>
-                        <textarea name='address' value={data.address} onChange={onchangeHandler} className="form-control" id="exampleFormControlTextarea1" rows="2" required></textarea>
+                        <input type='text' name='address' value={data.address} onChange={onchangeHandler} className="form-control" id="exampleFormControlInput1"  required></input>
                     </div>
                     <input type="submit" className='btn btn-primary' />
                 </form>

@@ -3,18 +3,17 @@ import Row from './Row'
 import { useDispatch, useSelector } from 'react-redux'
 import { getall_user } from './redux/userAction'
 import Loader from './Loader'
+import './home.css'
 
 const Users = () => {
     const { users, loading } = useSelector(state => state.alluser)
     const dispatch = useDispatch();
-    console.log("here")
 
 
     useEffect(() => {
-        dispatch(getall_user());
+        dispatch(getall_user())
     }, [dispatch])
     let i = 1, j = 1;
-
 
 
     return (
@@ -22,17 +21,15 @@ const Users = () => {
             {loading ? <Loader /> :
 
                 <>{users && users.length > 0 ?
-                    <table className="table">
-                        <thead>
+                    <table className='table' >
+                        <thead >
                             <tr>
-                                <th scope="col">Serial No.</th>
-                                <th scope="col">Username</th>
-                                <th scope="col">Address</th>
+                                <th >Serial No.</th>
+                                <th>Username</th>
+                                <th >Address</th>
                             </tr>
                         </thead>
                         <tbody>
-
-
 
                             {users && users.map((e) => {
                                 return <Row key={j++} data={e} i={i++} />

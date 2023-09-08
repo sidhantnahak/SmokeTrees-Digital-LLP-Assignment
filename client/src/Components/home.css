@@ -39,12 +39,11 @@ a{
 }
 
 .users{
-    padding: 1.5rem 1rem;
+    padding: 1.5rem;
     min-height: 100vh;
 }
 
 table{
-    margin: 1.5rem 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
