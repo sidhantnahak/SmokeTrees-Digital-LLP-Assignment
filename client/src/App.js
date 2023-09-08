@@ -3,6 +3,7 @@ import { Routes, Route, BrowserRouter as Router, BrowserRouter } from 'react-rou
 import Home from './Components/Home';
 
 function App() {
+
   return (
     <>
       <BrowserRouter>

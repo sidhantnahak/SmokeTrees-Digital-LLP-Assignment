@@ -27,7 +27,7 @@ router.post('/register', userDataValidation, async (req, res) => {
             }
         }
         if (chk) {
-            return res.status(422).json({ error: "same name with same address user already exist", sucess: false })
+            return res.status(422).json({ message: "same name with same address user already exist", sucess: false })
         }
 
         const user = await User.create({
@@ -38,7 +38,7 @@ router.post('/register', userDataValidation, async (req, res) => {
         return res.status(200).json({ user: user, sucess: true });
 
     } catch (error) {
-        return res.status(500).json({ error: error.message, sucess: false });
+        return res.status(500).json({ message: error.message, sucess: false });
 
     }
 })
@@ -52,7 +52,7 @@ router.get('/getalluser', async (req, res) => {
         return res.status(200).json({ users: users, sucess: true });
 
     } catch (error) {
-        return res.status(500).json({ error: error.message, sucess: true });
+        return res.status(500).json({ message: error.message, sucess: true });
 
     }
 })

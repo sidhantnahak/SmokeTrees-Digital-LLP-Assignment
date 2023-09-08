@@ -1,47 +1,72 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import './home.css'
-import axios from 'axios'
-import { useDispatch } from 'react-redux'
-import { register_user } from './redux/userAction'
+import { useDispatch, useSelector } from 'react-redux'
+import { Clear_Errors, getall_user, register_user } from './redux/userAction'
+import { useAlert } from 'react-alert'
+import { register_user_reset } from './redux/userConstants'
+import Users from './Users'
+import Loader from './Loader'
 const Home = () => {
-    const [getdata,setgetdata]=useState([]);
-    const dispatch=useDispatch();
+    const dispatch = useDispatch();
+    const alert = useAlert();
 
-    const backend_url="https://studentdatacollection.onrender.com"
 
-    const [data,setdata]=useState({name:"",address:""});
-    const  onchangeHandler=(e)=>{
-        
-        setdata({...data,[e.target.name]:e.target.value})
+    const [data, setdata] = useState({ name: "", address: "" });
+    const [topHeight, settopHeight] = useState(0)
+    const ref = useRef();
+
+    const { sucess, error, loading } = useSelector(state => state.user);
+
+    const onchangeHandler = (e) => {
+
+        setdata({ ...data, [e.target.name]: e.target.value })
 
     }
-    const formHandler=(e)=>{
+    const formHandler = (e) => {
         e.preventDefault()
         dispatch(register_user(data))
+
+
     }
-    // const getUser=async()=>{
-    //     console.log("hrer2")
-    //     try {
-    //       await axios.get(`${backend_url}/api/v1/getalluser`)
-    //       .then(e=>e.data)
-    //       .then(data=>setgetdata(data))
-    //       .catch(err=>console.log(err))
+    const userHandler = () => {
+        let elem = document.getElementById("users");
+        elem.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
+    }
+    var elem = document.getElementById("sidebar")
 
-            
-    //     } catch (error) {
-    //         console.log(error)
-            
-    //     }
-        
-    // }
-console.log(getdata)
+    if (topHeight > 40) {
+        if (elem) {
+            elem.style.paddingTop = "1.5rem"
+
+        }
+    } else {
+        if (elem) {
+            elem.style.paddingTop = "5rem"
+
+        }
+
+    }
+    document.onscroll = function () {
+        settopHeight(document.documentElement.scrollTop);
+    };
     useEffect(() => {
-        console.log("hrer")
-        // getUser();
 
-    }, [])
-    
+        if (error) {
+            alert.error(error);
+            dispatch(Clear_Errors())
+        }
+        if (sucess) {
+            data.name = ""
+            data.address = "";
+            alert.success("User registred sucessfully")
+            dispatch(getall_user())
+            dispatch({ type: register_user_reset })
+        }
+
+    }, [dispatch, error, sucess, alert, data])
+
+
 
     return (
         <>
@@ -55,59 +80,38 @@ console.log(getdata)
                 </div>
             </nav>
             <div className='nav_item'>
-                <Link to='/'>Register Here</Link>
-                <Link to='/users'>All Users</Link>
+
+                <Link onClick={() => ref.current.focus()} to='/'>Register Here</Link>
+                <Link onClick={userHandler}>All Users</Link>
             </div>
 
-            <div className='sidebar'>
-                <Link to='/'>Register Here</Link>
-                <Link to='/users'>All Users</Link>
+            <div id='sidebar' className='sidebar'>
+                {topHeight > 40 && <Link to='/' className="navbar-brand text-black">SmokeTrees Digital LLP</Link>}
+
+                <Link onClick={() => ref.current.focus()} to='/'>Register Here</Link>
+                <Link onClick={userHandler}>All Users</Link>
             </div>
 
 
             <div className="form_div">
-                <form onSubmit={formHandler}  style={{ width: "80%", boxShadow: "1px 1px 5px black", padding: "1rem 2rem", margin: "auto" }}>
+                <form onSubmit={formHandler} style={{ width: "80%", boxShadow: "1px 1px 5px black", padding: "1rem 2rem", margin: "auto" }}>
                     <div className="mb-3">
                         <label htmlFor="exampleFormControlInput1" className="form-label">Enter Your Name</label>
-                        <input type="text" name="name" onChange={onchangeHandler} className="form-control" id="exampleFormControlInput1" required />
+                        <input ref={ref} type="text" name="name" value={data.name} onChange={onchangeHandler} className="form-control" id="exampleFormControlInput1" required />
                     </div>
                     <div className="mb-3">
                         <label htmlFor="exampleFormControlTextarea1" className="form-label">Enter Your Address</label>
-                        <textarea name='address' onChange={onchangeHandler} className="form-control" id="exampleFormControlTextarea1" rows="2" required></textarea>
+                        <textarea name='address' value={data.address} onChange={onchangeHandler} className="form-control" id="exampleFormControlTextarea1" rows="2" required></textarea>
                     </div>
                     <input type="submit" className='btn btn-primary' />
                 </form>
             </div>
-            <div className="users form_div">
+            <div id='users' className="users form_div">
                 <h3>Registered Users</h3>
                 <hr />
+                {loading ? <Loader /> :
 
-                <table className="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Serial No.</th>
-                            <th scope="col">Username</th>
-                            <th scope="col">Address</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>Larry the Bird</td>
-                            <td>@twitter</td>
-                        </tr>
-                    </tbody>
-                </table>
+                    <Users />}
             </div>
 
         </>
